@@ -1,0 +1,100 @@
+ion-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 5px;
+  height: 100vh;
+  background: linear-gradient(to bottom right, #1a1a1a, #333333) !important;
+}
+
+.form-content {
+  background: hsl(30, 89%, 62%) !important;
+  padding: 24px 20px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); 
+  max-width: 360px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* antes estaba en 24px para todo, ahora podemos refinar solo para los botones */
+  text-align: center;
+  border: 1px solid #2a2a2a;
+}
+
+ion-item {
+  --background: transparent !important;
+  --color: #fff !important;
+  font-size: 1rem !important;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+
+ion-button {
+  width: 75%;
+  margin: 0.25rem auto;
+  background-color: #c2185b !important;
+  color: #fff !important;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
+  border-radius: 14px;
+  padding: 6px 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+ion-input {
+  font-size: 1rem !important;
+  color: #fff !important;
+}
+
+ion-icon {
+  font-size: 1.4rem !important;
+  color: #f6b73c !important;
+}
+
+ion-label {
+  color: #fff;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.form-content h2 {
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.form-content p {
+  color: #ffffff;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.form-content ion-input {
+  background-color: #2c2c2c !important;
+  color: hsl(36, 93%, 67%);
+  border-radius: 8px;
+  padding: 6px;
+  font-size: 1rem;
+  margin-top: 0;
+}
+
+ion-card {
+  background: #1f1f1f !important;
+}
+
+.black-text {
+  color: #000 !important;
+}
+
+.white-placeholder ::placeholder {
+  color: white;
+  opacity: 1;
+}

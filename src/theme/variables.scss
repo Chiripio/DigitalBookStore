@@ -1,0 +1,28 @@
+// For information on how to create your own theme, please see:
+// http://ionicframework.com/docs/theming/
+
+:root {
+  /* Colores base para fondo claro */
+  --ion-background-color: #f6b347;
+  --ion-text-color: #2e2e2e;
+  --ion-item-background: hsla(38, 86%, 54%, 0.914);
+  --ion-color-primary: hsl(40, 94%, 63%);
+  --ion-color-primary-contrast: #fffaf0;
+  --ion-toolbar-background: #f6b347;
+  --ion-tab-bar-background: #f6b347;
+
+  --ion-color-secondary: #ff8f00; /* naranja dorado */
+  --ion-color-tertiary: #c2185b;  /* rojo oscuro */
+  --ion-color-light: #ffffff;
+  --ion-icon-cart-bg: #ff4081;
+
+  --alert-button-text-color: #000000; /* Cambia el color del texto de los botones del alert a negro */
+
+  ion-alert .alert-button {
+    color: black !important;
+  }
+}
+
+.alert-button-black {
+  --color: var(--alert-button-text-color);
+}

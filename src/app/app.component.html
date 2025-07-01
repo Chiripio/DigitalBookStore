@@ -1,0 +1,72 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu *ngIf="document.body.getAttribute('data-usuario-logueado') === 'true'" contentId="main-content" type="overlay" class="menu-estilo" mode="ios" menuId="first">
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Menú</ion-title>
+          <ion-buttons slot="end" *ngIf="usuarioLogueado">
+            <ion-button (click)="cerrarSesion()">
+              <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="menu-contenido">
+        <ion-list class="menu-lista">
+          <ion-item (click)="navigateAndClose('/catalogo')">
+            <ion-label>Catálogo</ion-label>
+          </ion-item>
+          <ion-item (click)="navigateAndClose('/ofertas')">
+            <ion-label>Ofertas</ion-label>
+          </ion-item>
+          <ion-item (click)="navigateAndClose('/perfil-usuario')">
+            <ion-label>Perfil Usuario</ion-label>
+          </ion-item>
+          <ion-item (click)="navigateAndClose('/carrito')">
+            <ion-label>Carrito</ion-label>
+          </ion-item>
+          <ion-item (click)="cerrarSesion()">
+            <ion-icon name="log-out-outline" slot="start"></ion-icon>
+            <ion-label>Cerrar sesión</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+
+
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+    <ion-tabs>
+      <ion-tab-bar slot="bottom" class="custom-tab-bar">
+        <ion-tab-button tab="home" [routerLink]="['/home']" *ngIf="document.body.getAttribute('data-usuario-logueado') === 'true'">
+          <ion-icon name="home-outline"></ion-icon>
+          <ion-label>Inicio</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="catalogo" [routerLink]="['/catalogo']">
+          <ion-icon name="library-outline"></ion-icon>
+          <ion-label>Catálogo</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="ofertas" [routerLink]="['/ofertas']">
+          <ion-icon name="pricetags-outline"></ion-icon>
+          <ion-label>Ofertas</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="carrito" [routerLink]="['/carrito']">
+          <ion-icon name="cart-outline"></ion-icon>
+          <ion-label>Carrito</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="tiendas" [routerLink]="['/tiendas']">
+          <ion-icon name="map-outline"></ion-icon>
+          <ion-label>Tiendas</ion-label>
+        </ion-tab-button>
+
+        <ion-tab-button tab="perfil" [routerLink]="document.body.getAttribute('data-usuario-logueado') === 'true' ? '/perfil-usuario' : '/login'">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-label>Perfil</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-split-pane>
+</ion-app>

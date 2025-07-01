@@ -1,0 +1,132 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+
+/* Personalización de los botones de los ion-alert */
+::ng-deep .alert-button {
+  color: black !important;
+}
+
+::ng-deep .alert-input {
+  color: black !important;
+}
+
+::ng-deep .alert-wrapper .alert-button,
+::ng-deep .alert-button.sc-ion-alert-md {
+  color: black !important;
+}
+
+::ng-deep .alert-wrapper .alert-input {
+  color: black !important;
+}
+
+::ng-deep .alert-wrapper input {
+  color: black !important;
+}
+
+// Personalización específica para alertas con la clase .alerta-personalizada
+::ng-deep .alerta-personalizada .alert-button,
+::ng-deep .alerta-personalizada .alert-input,
+::ng-deep .alerta-personalizada input {
+  color: black !important;
+}
+
+::ng-deep .alert-button.sc-ion-alert-md {
+  color: black !important;
+}
+
+/* Clase para textos negros en ion-alert */
+.black-text {
+  --color: black;
+  color: black !important;
+}
+
+/* Clase para textos blancos en ion-alert */
+.white-placeholder::placeholder {
+  color: white !important;
+}
+
+// Forzar el color negro y negrita del botón "OK" de los ion-alert
+// Eliminada la definición previa de ::ng-deep .alert-button[aria-label="OK"]
+
+// Forzar color negro al botón OK mediante ::part
+ion-alert::part(button) {
+  color: black !important;
+  font-weight: bold !important;
+}
+
+// Compatibilidad extra para el botón OK por nombre
+::ng-deep .alert-button[aria-label="OK"],
+::ng-deep .alert-button.sc-ion-alert-md[aria-label="OK"] {
+  color: black !important;
+  font-weight: bold !important;
+}
+
+// Color negro para el botón OK con clase personalizada
+ion-alert.alert-ok-button::part(button) {
+  color: black !important;
+  font-weight: bold !important;
+}
+
+// Color negro para el botón OK con clase alert-button-black
+ion-alert.alert-button-black::part(button) {
+  color: black !important;
+  font-weight: bold !important;
+}
+
+/* Estilo para que el botón "OK" del alert se vea negro */
+.alert-ok-button {
+  color: black !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .alert-button-inner {
+  color: black !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .alert-button,
+::ng-deep .alert-button span {
+  color: black !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .alerta-negra .alert-button,
+::ng-deep .alerta-negra .alert-button span,
+::ng-deep .alerta-negra .alert-button-inner {
+  color: black !important;
+  font-weight: bold !important;
+}
