@@ -1,7 +1,0 @@
-{
-  "name": "DigitalBookStore",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
