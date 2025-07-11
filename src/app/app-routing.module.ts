@@ -46,6 +46,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/tiendas/tiendas.module').then( m => m.TiendasPageModule)
   },
   {
+    path: 'mapa-gps',
+    loadChildren: () => import('./pages/mapa-gps/mapa-gps.module').then( m => m.MapaGpsPageModule)
+  },
+  {
+    path: 'lector-digital',
+    loadChildren: () => import('./pages/lector-digital/lector-digital.module').then( m => m.LectorDigitalPageModule)
+  },
+  {
     path: '**',
     redirectTo: 'login',
     pathMatch: 'full'

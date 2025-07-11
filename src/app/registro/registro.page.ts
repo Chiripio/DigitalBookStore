@@ -91,6 +91,11 @@ export class RegistroPage implements OnInit {
 
     try {
       console.log('🔁 Intentando registrar usuario...', usuario);
+
+      // Asegurar inicialización de la base de datos y creación de tabla
+      await this.sqliteService.initDB();
+      await this.sqliteService.createUsuariosTable();
+
       console.log('✅ Llamando a insertUsuario con:', usuario);
       await this.sqliteService.insertUsuario(usuario);
       // Guardar en localStorage sólo después de insertar en SQLite

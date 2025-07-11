@@ -21,15 +21,31 @@ export class SqliteService {
 
   async initDB() {
     try {
-      if (this.platform === 'web') {
-        await this.sqlite.initWebStore();
+      if (!this.sqlite) {
+        this.sqlite = new SQLiteConnection(CapacitorSQLite);
       }
 
-      this.db = await this.sqlite.createConnection('librosDB', false, 'no-encryption', 1, false);
-      await this.db.open();
-      console.log('[SQLite] DB abierta correctamente');
+      const isAvailable = CapacitorSQLite && typeof CapacitorSQLite.createConnection === 'function';
+      if (!isAvailable) {
+        console.error('[SQLite] Plugin no disponible');
+        this.db = null;
+        return;
+      }
+
+      const isConnection = (await this.sqlite.isConnection('librosDB', false)).result;
+      if (!isConnection) {
+        this.db = await this.sqlite.createConnection('librosDB', false, 'no-encryption', 1, false);
+        await this.db.open();
+        console.log('[SQLite] DB abierta correctamente');
+      } else {
+        this.db = await this.sqlite.retrieveConnection('librosDB', false);
+        if (this.db) {
+          console.log('[SQLite] Conexión reutilizada');
+        }
+      }
     } catch (err) {
       console.error('[SQLite] Error al iniciar DB', err);
+      this.db = null;
     }
   }
 
@@ -47,15 +63,42 @@ export class SqliteService {
       );
     `;
     await this.db?.execute(query);
+    console.log('[SQLite] Tabla de usuarios creada/verificada');
+
+    // ⚠️ Verifica si ya existe el usuario admin@admin.com
+    const existe = await this.db?.query('SELECT * FROM usuarios WHERE correo = ?', ['admin@admin.com']);
+    if (existe?.values?.length === 0) {
+      const stmt = `
+        INSERT INTO usuarios (nombre, apellido, correo, contrasena, confirmar_contrasena, nivel_estudio, fecha_nacimiento)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `;
+      const values = [
+        'Eduardo',
+        'Guerrero',
+        'admin@admin.com',
+        '123456',
+        '123456',
+        'Superior',
+        new Date('1990-01-01').toISOString()
+      ];
+      await this.db?.run(stmt, values);
+      console.log('[SQLite] Usuario por defecto insertado: admin@admin.com / 123456');
+    }
   }
 
   async insertLibro(libro: { id: number, titulo: string, autor: string, imagen: string }) {
+    if (!this.db) {
+      await this.initDB();
+    }
     const stmt = 'INSERT INTO libros (id, titulo, autor, imagen) VALUES (?, ?, ?, ?)';
     const values = [libro.id, libro.titulo, libro.autor, libro.imagen];
     await this.db?.run(stmt, values);
   }
 
   async getLibros(): Promise<any[]> {
+    if (!this.db) {
+      await this.initDB();
+    }
     const res = await this.db?.query('SELECT * FROM libros');
     return res?.values || [];
   }
@@ -68,6 +111,13 @@ export class SqliteService {
     nivel_estudio: string;
     fecha_nacimiento: string;
   }) {
+    if (!this.db) {
+      await this.initDB();
+    }
+    if (!this.isDBOpen()) {
+      console.error('[SQLite] La base de datos no está abierta');
+      return null;
+    }
     console.log('📥 insertUsuario() llamado con:', usuario);
     const stmt = `
       INSERT INTO usuarios (nombre, apellido, correo, contrasena, confirmar_contrasena, nivel_estudio, fecha_nacimiento)
@@ -89,12 +139,18 @@ export class SqliteService {
     } catch (err) {
       console.error('[SQLite] Error al insertar usuario:', err);
     }
-    console.log('[SQLite] Datos insertados:', usuario);
     const res = await this.db?.query('SELECT * FROM usuarios');
-    console.log('[SQLite] Todos los usuarios después del insert:', res?.values);
+    return res?.values ?? [];
   }
 
   async getAllUsuarios(): Promise<any[]> {
+    if (!this.db) {
+      await this.initDB();
+    }
+    if (!this.isDBOpen()) {
+      console.error('[SQLite] La base de datos no está abierta');
+      return [];
+    }
     try {
       const res = await this.db?.query('SELECT * FROM usuarios');
       console.log('[SQLite] Usuarios en DB:', res?.values);
@@ -106,6 +162,13 @@ export class SqliteService {
   }
 
   async getUsuarioPorCredenciales(correo: string, contrasena: string): Promise<any | null> {
+    if (!this.db) {
+      await this.initDB();
+    }
+    if (!this.isDBOpen()) {
+      console.error('[SQLite] La base de datos no está abierta');
+      return null;
+    }
     try {
       const query = `
         SELECT * FROM usuarios
@@ -124,5 +187,9 @@ export class SqliteService {
       console.error('[SQLite] Error en getUsuarioPorCredenciales:', err);
       return null;
     }
+  }
+
+  isDBOpen(): boolean {
+    return this.db !== null;
   }
 }

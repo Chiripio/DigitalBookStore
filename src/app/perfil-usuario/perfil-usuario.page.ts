@@ -104,6 +104,18 @@ export class PerfilUsuarioPage {
         {
           text: 'Cámara',
           handler: async () => {
+            const permission = await Camera.requestPermissions();
+            if (permission.camera !== 'granted' && permission.photos !== 'granted') {
+              const alertaPermiso = await this.alertCtrl.create({
+                header: 'Permiso requerido',
+                message: 'Debes otorgar permisos de cámara y galería para cambiar la foto.',
+                buttons: ['OK'],
+                cssClass: 'alerta-personalizada'
+              });
+              await alertaPermiso.present();
+              return;
+            }
+
             const image = await Camera.getPhoto({
               quality: 80,
               allowEditing: false,
@@ -117,6 +129,18 @@ export class PerfilUsuarioPage {
         {
           text: 'Galería',
           handler: async () => {
+            const permission = await Camera.requestPermissions();
+            if (permission.camera !== 'granted' && permission.photos !== 'granted') {
+              const alertaPermiso = await this.alertCtrl.create({
+                header: 'Permiso requerido',
+                message: 'Debes otorgar permisos de cámara y galería para cambiar la foto.',
+                buttons: ['OK'],
+                cssClass: 'alerta-personalizada'
+              });
+              await alertaPermiso.present();
+              return;
+            }
+
             const image = await Camera.getPhoto({
               quality: 80,
               allowEditing: false,

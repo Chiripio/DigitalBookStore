@@ -18,9 +18,39 @@ export class AppComponent implements OnInit {
   appPages: any[] = [];
 
   ngOnInit() {
-    this.sqliteService.initDB().then(() => {
-      this.sqliteService.createUsuariosTable();
-    });
+    this.sqliteService.initDB()
+      .then(() => {
+        console.log('🟢 Base de datos inicializada correctamente');
+        return this.sqliteService.createUsuariosTable();
+      })
+      .then(() => {
+        return this.sqliteService.getAllUsuarios()
+          .then(usuarios => {
+            const usuario = usuarios?.find(u => u.correo === 'admin@admin.com');
+            if (!usuario) {
+              console.log('👤 Usuario por defecto no encontrado. Insertando...');
+              return this.sqliteService.insertUsuario({
+                nombre: 'Eduardo',
+                apellido: 'Guerrero',
+                correo: 'admin@admin.com',
+                contrasena: '123456',
+                confirmar_contrasena: '123456',
+                nivel_estudio: 'Superior',
+                fecha_nacimiento: '1990-01-01'
+              }).then(() => {});
+            } else {
+              console.log('👤 Usuario por defecto ya existe.');
+              return;
+            }
+          });
+      })
+      .then(() => {
+        return this.sqliteService.getAllUsuarios();
+      })
+      .then(usuarios => {
+        console.log('📋 Usuarios actuales en SQLite:', usuarios);
+      })
+      .catch(error => console.error('❌ Error al inicializar DB o insertar usuario:', error));
 
     this.actualizarUsuarioActivo();
 
@@ -46,6 +76,11 @@ export class AppComponent implements OnInit {
       .subscribe((event: NavigationEnd) => {
         this.mostrarMenu = event.url !== '/login';
       });
+
+    // Solo en desarrollo o para pruebas E2E con Cypress
+    if (window && !(window as any)['sqliteService']) {
+      (window as any)['sqliteService'] = this.sqliteService;
+    }
   }
 
   async cerrarSesion() {
@@ -78,7 +113,31 @@ export class AppComponent implements OnInit {
   }
 
   navigateAndClose(ruta: string) {
-    this.router.navigate([ruta]);
+    const usuarioActivo = localStorage.getItem('usuarioActivo');
+
+    switch (ruta) {
+      case '/perfil-usuario':
+        if (usuarioActivo === 'true') {
+          this.router.navigate(['/perfil-usuario']);
+        } else {
+          this.router.navigate(['/login']);
+        }
+        break;
+
+      case '/logout':
+        this.cerrarSesion();
+        break;
+
+      case '/mapa-gps':
+        // Aseguramos que solo se navegue cuando se llama explícitamente
+        this.router.navigate(['/mapa-gps']);
+        break;
+
+      default:
+        this.router.navigate([ruta]);
+        break;
+    }
+
     this.menu.close();
   }
 
@@ -91,6 +150,7 @@ export class AppComponent implements OnInit {
         { title: 'Tiendas', url: '/tiendas', icon: 'map' },
         { title: 'Carrito', url: '/carrito', icon: 'cart' },
         { title: 'Perfil Usuario', url: '/perfil-usuario', icon: 'person' },
+        { title: 'Mapa GPS', url: '/mapa-gps', icon: 'location' },
         { title: 'Cerrar sesión', url: '/logout', icon: 'log-out' }
       ];
     } else {
@@ -99,6 +159,7 @@ export class AppComponent implements OnInit {
         { title: 'Catálogo', url: '/catalogo', icon: 'book' },
         { title: 'Ofertas', url: '/ofertas', icon: 'pricetag' },
         { title: 'Tiendas', url: '/tiendas', icon: 'map' },
+        { title: 'Mapa GPS', url: '/mapa-gps', icon: 'location' },
         { title: 'Login', url: '/login', icon: 'log-in' }
       ];
     }

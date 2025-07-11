@@ -1,5 +1,8 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title class="ion-text-center">Login</ion-title>
   </ion-toolbar>
 </ion-header>
@@ -25,11 +28,11 @@
         <form (ngSubmit)="ingresar()">
           <ion-list>
             <ion-item lines="none">
-              <ion-input type="email" required [(ngModel)]="user.usuario" name="usuario" placeholder="Correo electrónico"></ion-input>
+              <ion-input type="email" required [(ngModel)]="user.usuario" name="usuario" placeholder="Correo electrónico" data-testid="correo-input"></ion-input>
             </ion-item>
 
             <ion-item lines="none">
-              <ion-input type="password" required [(ngModel)]="user.password" name="password" placeholder="Contraseña"></ion-input>
+              <ion-input type="password" required [(ngModel)]="user.password" name="password" placeholder="Contraseña" data-testid="password-input"></ion-input>
             </ion-item>
 
             <ion-button expand="block" color="tertiary" class="ion-margin-top" type="submit">
@@ -42,6 +45,7 @@
                 ¿Olvidaste tu contraseña?
               </ion-button>
             </ion-item>
+
 
             <ion-item lines="none">
               <ion-button fill="outline" size="default" (click)="registrarse()" class="ion-text-center" expand="block">

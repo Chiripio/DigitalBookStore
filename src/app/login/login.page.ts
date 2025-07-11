@@ -31,15 +31,18 @@ export class LoginPage implements OnInit {
     private sqliteService: SqliteService
   ) {}
 
-  ngOnInit() {
-    this.verificarPermisoGeolocalizacion();
+  async ngOnInit() {
+    await this.sqliteService.initDB();
+    await this.sqliteService.createUsuariosTable();
 
-    // ✅ Mostrar usuarios almacenados en SQLite
-    this.sqliteService.getAllUsuarios().then((usuarios: any[]) => {
+    try {
+      const usuarios = await this.sqliteService.getAllUsuarios();
       console.log('👥 Usuarios almacenados en SQLite:', usuarios);
-    }).catch((error: any) => {
+    } catch (error) {
       console.error('❌ Error al obtener usuarios desde SQLite:', error);
-    });
+    }
+
+    this.verificarPermisoGeolocalizacion();
   }
 
   ionViewWillEnter() {
@@ -99,18 +102,42 @@ export class LoginPage implements OnInit {
 
   async ingresar() {
     if (!this.user.usuario || !this.user.password) {
-      const alert = await this.alertController.create({
-        header: 'Advertencia',
-        message: 'Debes completar todos los campos.',
-        buttons: ['Aceptar']
-      });
-      await alert.present();
-      return;
+      if (!this.user.usuario) {
+        const alert = await this.alertController.create({
+          header: 'Campo requerido',
+          message: 'Correo es obligatorio',
+          buttons: ['Aceptar']
+        });
+        await alert.present();
+        return;
+      }
+
+      if (!this.user.password) {
+        const alert = await this.alertController.create({
+          header: 'Campo requerido',
+          message: 'Contraseña es obligatoria',
+          buttons: ['Aceptar']
+        });
+        await alert.present();
+        return;
+      }
     }
 
     try {
       await this.sqliteService.initDB();
+      const isOpen = await this.sqliteService.isDBOpen?.();
+      if (!isOpen) {
+        console.error('❌ La base de datos no está abierta.');
+        const alert = await this.alertController.create({
+          header: 'Error',
+          message: 'No se pudo abrir la base de datos.',
+          buttons: ['Aceptar']
+        });
+        await alert.present();
+        return;
+      }
       await this.sqliteService.createUsuariosTable();
+
 
       const usuarioEncontrado = await this.sqliteService.getUsuarioPorCredenciales(
         this.user.usuario.trim().toLowerCase(),
@@ -119,14 +146,15 @@ export class LoginPage implements OnInit {
       console.log('🔍 Buscando usuario con:', this.user.usuario, this.user.password);
       console.log('🔎 Resultado de búsqueda:', usuarioEncontrado);
 
-      if (usuarioEncontrado) {
+      if (usuarioEncontrado && usuarioEncontrado.correo) {
         console.log('✅ Usuario encontrado:', usuarioEncontrado);
-        await this.storageService.set('usuario', usuarioEncontrado.usuario);
+        await this.storageService.set('usuario', usuarioEncontrado.correo);
         localStorage.setItem('usuarioActivo', 'true');
         localStorage.setItem('usuario', JSON.stringify(usuarioEncontrado));
         const navigationExtras: NavigationExtras = {
-          state: { usuario: usuarioEncontrado.usuario }
+          state: { usuario: usuarioEncontrado.correo }
         };
+        console.log('🔁 Redirigiendo a perfil-usuario...');
         this.router.navigate(['/perfil-usuario'], navigationExtras);
       } else {
         const alert = await this.alertController.create({
