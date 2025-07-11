@@ -1,0 +1,46 @@
+.menu-estilo {
+  color-scheme: light !important;
+  --background: #f6b347 !important;
+  background: #f6b347 !important;
+  color: #2e2e2e !important;
+}
+
+.menu-estilo::part(content) {
+  background-color: #f6b347 !important;
+}
+
+.menu-lista {
+  background-color: #f6b347 !important;
+}
+
+.menu-lista ion-item {
+  --background: #ff7043 !important; /* mismo color que botón "Entrar como invitado" */
+  --color: #fffaf0 !important;
+  opacity: 1 !important;
+  border-radius: 6px;
+  margin: 4px 8px;
+}
+
+.menu-lista ion-label {
+  color: #fffaf0 !important;
+  font-weight: bold;
+  opacity: 1 !important;
+}
+
+.menu-estilo::part(container) {
+  background-color: #f6b347 !important;
+}
+
+::ng-deep ion-menu.menu-estilo ion-content {
+  --background: #f6b347 !important;
+  background: #f6b347 !important;
+}
+
+::ng-deep ion-menu.menu-estilo .menu-inner {
+  background-color: #f6b347 !important;
+}
+
+.menu-contenido {
+  --background: #f6b347 !important;
+  background-color: #f6b347 !important;
+}

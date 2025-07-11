@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">DigitalBookStore</string>
+    <string name="title_activity_main">DigitalBookStore</string>
+    <string name="package_name">com.digitalbookstore.app</string>
+    <string name="custom_url_scheme">com.digitalbookstore.app</string>
+</resources>

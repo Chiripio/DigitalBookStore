@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding login-content" [fullscreen]="true">
+  <div *ngIf="clima" class="weather-container ion-text-center">
+    <div style="display: flex; align-items: center; justify-content: center;">
+      <img *ngIf="clima?.icono" [src]="'https://openweathermap.org/img/wn/' + clima.icono + '@2x.png'" alt="Icono del clima" width="50" height="50" style="margin-right: 10px;">
+      <div class="ion-text-left">
+        <div>{{ clima.temperatura }}°C - {{ clima.descripcion }}</div>
+        <div class="ciudad">{{ clima.ciudad }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="login-wrapper">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title class="ion-text-center" color="light">Bienvenido</ion-card-title>
+        <ion-card-subtitle class="ion-text-center" color="light">Inicia sesión con tu correo</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content class="form-content">
+        <form (ngSubmit)="ingresar()">
+          <ion-list>
+            <ion-item lines="none">
+              <ion-input type="email" required [(ngModel)]="user.usuario" name="usuario" placeholder="Correo electrónico" data-testid="correo-input"></ion-input>
+            </ion-item>
+
+            <ion-item lines="none">
+              <ion-input type="password" required [(ngModel)]="user.password" name="password" placeholder="Contraseña" data-testid="password-input"></ion-input>
+            </ion-item>
+
+            <ion-button expand="block" color="tertiary" class="ion-margin-top" type="submit">
+              <ion-icon name="log-in" slot="start"></ion-icon>
+              Iniciar Sesión
+            </ion-button>
+
+            <ion-item lines="none">
+              <ion-button fill="clear" size="small" (click)="recuperarPassword()" class="ion-text-center" expand="full">
+                ¿Olvidaste tu contraseña?
+              </ion-button>
+            </ion-item>
+
+
+            <ion-item lines="none">
+              <ion-button fill="outline" size="default" (click)="registrarse()" class="ion-text-center" expand="block">
+                Registrarse
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

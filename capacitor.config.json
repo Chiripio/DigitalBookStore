@@ -1,0 +1,6 @@
+{
+  "appId": "com.digitalbookstore.app",
+  "appName": "DigitalBookStore",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

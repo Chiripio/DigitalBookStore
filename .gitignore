@@ -1,0 +1,53 @@
+
+
+node_modules/
+.angular/
+www/
+
+# Android build outputs
+/android/app/build/
+*.apk
+*.aab
+
+# macOS system files
+.DS_Store
+
+# Environment and config
+*.env
+.env.*
+*.keystore
+
+# Capacitor build artifacts
+/ios/App/public/
+/android/app/src/main/assets/public/
+/android/app/src/main/assets/capacitor.config.json
+
+# Web build output
+/build/
+/dist/
+
+# Node.js
+node_modules/
+
+# Angular
+.angular/
+
+# macOS
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Cypress output
+/cypress/videos/
+/cypress/screenshots/
+
+# Keystore files
+*.keystore
+
+# Lock alternativos innecesarios
+package-lock\ 2.json
+package-lock\ 3.json
+package-lock\ 4.json
+
